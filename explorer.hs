@@ -1,6 +1,9 @@
 -- CPSC 312 Project 1 by Curtis Fox and Jennifer Ahn
 module Explorer where
-
+-- To run the program, use the following commands in this order:
+-- ghci
+-- :l explorer.hs
+-- :run main
 import Graphics.Gloss
 import Graphics.Gloss.Interface.Pure.Game
 

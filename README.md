@@ -6,7 +6,7 @@
 
 This repository contains all files for this project.
 
-List of References:
+List of References Used:
 
 [Haskell Documentation](http://hackage.haskell.org/package/gloss)
 
