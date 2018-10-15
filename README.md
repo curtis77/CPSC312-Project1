@@ -6,7 +6,11 @@
 
 This repository contains all files for this project.
 
-List of Reference URL's used:
-[Ref 1](http://hackage.haskell.org/package/gloss)
-[Ref 2](https://functional-programming.it.jyu.fi/master/pages/ProjectAsteroids.md)
+List of References:
+
+[Haskell Documentation](http://hackage.haskell.org/package/gloss)
+
+[Example Game using Gloss](https://functional-programming.it.jyu.fi/master/pages/ProjectAsteroids.md)
+
+[Link to code for Example Game](https://functional-programming.it.jyu.fi/downloads/AsteroidsFinal.hs)
 
