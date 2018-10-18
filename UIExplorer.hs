@@ -1,5 +1,5 @@
 -- CPSC 312 Project 1 by Curtis Fox and Jennifer Ahn
-module Explorer where
+module UIExplorer where
 -- To run the program, use the following commands in this order:
 -- ghci
 -- :l explorer.hs
@@ -11,7 +11,7 @@ import Graphics.Gloss.Interface.Pure.Game
 main :: IO ()
 main = play (InWindow "UI Explorer" (770, 770) (0,0)) blue 2 startingWorld renderWorld handleKeys stepWorld
 
--- This data definition defines the state of the game
+-- This data definition defines the state of the game, with the player, monster, list of Food and current score
 data Game = ContinueGame Player Monster [Food] Score
           | GameEnd Int
           deriving (Eq,Show)
@@ -21,7 +21,7 @@ data Player = Player Position
           deriving (Eq,Show)
 
 -- This data definition defines the monster with its respective position on the UI		  
-data Monster = Monster Position Float Int
+data Monster = Monster Position Speed Int
           deriving (Eq,Show)
 
 -- This data definition defines a Food item	  
@@ -34,6 +34,9 @@ type Position = (Float, Float)
 -- This type defines the current player score
 type Score = Int
 
+-- This type defines the monster's current speed
+type Speed = Float
+
 -- This is the function returns the starting world state
 startingWorld :: Game
 startingWorld = (ContinueGame (Player (0,0)) (Monster (100,100) 10 0) [(Food (100,150)), (Food (-100,-150)), (Food (200,-150))] 0)
@@ -45,7 +48,10 @@ renderWorld (ContinueGame (Player (x,y)) (Monster (xm,ym) s countx) foodList sco
                   (rectangleWire 770 770),
                   (translate xm ym (color green (circleSolid 10)))] ++ (allFoodRender foodList))
 renderWorld (GameEnd score) = pictures [(color red (scale 0.75 0.75 (translate (-350) 250 (text "Game Over")))),
-                                        (color red (scale 0.50 0.50 (translate (-450) 150 (text "Total Score: "))))] 
+                                        (color red (scale 0.50 0.50 (translate (-450) 150 (text (appendScore score)))))]
+
+-- This function takes in the score, and appends it to the string "Total Score: "
+appendScore score = "Total Score: " ++ show score
 
 -- This function takes in a list of Food and renders each food and produces a yellow rectangle for each food piece
 allFoodRender :: [Food] -> [Picture]
@@ -96,13 +102,13 @@ handleKeys (EventKey (SpecialKey KeyRight) Down _ _) (ContinueGame (Player (x,y)
           newList = (newFoodList x y foodList)
           check = (checkFood x y foodList)
 
--- Speeds up mosnter if left shift pressed
+-- Speeds up monster if left shift pressed
 handleKeys (EventKey (SpecialKey KeyShiftL) Down _ _) (ContinueGame (Player (x,y)) (Monster (xm,ym) s countx) foodList score) 
     | s < 40 = (player (Monster (xm,ym) (s + 5) countx) foodList score)
     | s >= 40 = (player (Monster (xm,ym) s countx) foodList score)
     where player = ContinueGame (Player (x,y))
 
--- Slows monter down if left ctrl pressed
+-- Slows monster down if left ctrl pressed
 handleKeys (EventKey (SpecialKey KeyCtrlL) Down _ _) (ContinueGame (Player (x,y)) (Monster (xm,ym) s countx) foodList score) 
     | s >= 5 = (player (Monster (xm,ym) (s - 5) countx) foodList score)
     | s < 5 = (player (Monster (xm,ym) s countx) foodList score)
@@ -120,7 +126,7 @@ newFoodList xp yp ((Food (x,y)):xs)
     | otherwise = (Food (x,y)) : newFoodList xp yp xs
 
 -- This function takes in the x and y coordinate of the player, as well as the current list of food, and
--- returns true if a player passes over a food item, elase false
+-- returns true if a player passes over a food item, else false
 checkFood :: Float -> Float -> [Food] -> Bool
 checkFood _ _ [] = False
 checkFood xp yp ((Food (x,y)):xs) 
