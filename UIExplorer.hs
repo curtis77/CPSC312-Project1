@@ -10,7 +10,7 @@ import System.Random
 
 -- main function that starts the UI/game
 main :: IO ()
-main = play (InWindow "UI Explorer" (770, 770) (0,0)) blue 1 startingWorld renderWorld handleKeys stepWorld
+main = play (InWindow "UI Explorer" (770, 770) (0,0)) black 1 startingWorld renderWorld handleKeys stepWorld
 
 -- This data definition defines the state of the game, with the player, monster, list of Food and current score
 data Game = ContinueGame Player Monster [Food] Score Passed
