@@ -138,7 +138,7 @@ checkFood xp yp ((Food (x,y)):xs)
     | otherwise = checkFood xp yp xs
 
 -- This function takes in the time passed and the current world state, and updates the world
--- state accordingly based the amount of time passed
+-- state every second
 stepWorld :: Float -> Game -> Game
 stepWorld time (ContinueGame (Player (x,y)) (Monster (xm,ym) s) foodList score passed)
     | passed > 120 = GameEnd score -- game ends after time limit reached
@@ -165,7 +165,7 @@ moveToFood (ContinueGame (Player (x,y)) (Monster (xm,ym) s) ((Food (xf,yf)):xs) 
     | otherwise = moveToFood (ContinueGame (Player (x,y)) (Monster (xm,ym) s) xs score passed) max (xmin,ymin)
     where diff = sqrt ((xm - xf) ** 2 + (ym - yf) ** 2)
 
--- This function takes in the world state and moves the monster towards the move item with position (xf, yf)
+-- This function takes in the world state and moves the monster towards the food item with position (xf, yf)
 moveMonsterFood :: (Float, Float) -> Game -> Game
 moveMonsterFood (xf, yf) (ContinueGame (Player (x,y)) (Monster (xm,ym) s) foodList score passed) 
     | (absVal (x - xm) <= 20) && (absVal (y - ym) <= 20) = (GameEnd score) -- monster has caught player, and game ends
@@ -184,7 +184,6 @@ moveMonsterFood (xf, yf) (ContinueGame (Player (x,y)) (Monster (xm,ym) s) foodLi
           checkTime = newFoodAdd passed foodList
 
 -- This function takes in the current world state, and moves the monster towards the player
--- Type Definition  
 moveToPlayer :: Game -> Game
 moveToPlayer (ContinueGame (Player (x,y)) (Monster (xm,ym) s) foodList score passed)
     | (distx <= 20) && (disty <= 20) = (GameEnd score) -- monster has caught player, and game ends
