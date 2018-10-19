@@ -149,7 +149,7 @@ stepWorld time (ContinueGame (Player (x,y)) (Monster (xm,ym) s) foodList score p
 
 stepWorld _ (GameEnd score) = (GameEnd score)
 
--- This function takes in the the x and y coordinates of the player and monster, as well as the food list, and 
+-- This function takes in the x and y coordinates of the player and monster, as well as the food list, and 
 -- returns true if the monster should move towards the food, since it's closer than the player, else false
 checkMove :: Float -> Float -> Float -> Float -> [Food] -> Bool
 checkMove _ _ _ _ [] = False
@@ -165,7 +165,7 @@ moveToFood (ContinueGame (Player (x,y)) (Monster (xm,ym) s) ((Food (xf,yf)):xs) 
     | otherwise = moveToFood (ContinueGame (Player (x,y)) (Monster (xm,ym) s) xs score passed) max (xmin,ymin)
     where diff = sqrt ((xm - xf) ** 2 + (ym - yf) ** 2)
 
--- This function takes in the world state and moves the monster towards the food item with position (xf, yf)
+-- This function takes in the world state and the position of a food item, and moves the monster towards the food item
 moveMonsterFood :: (Float, Float) -> Game -> Game
 moveMonsterFood (xf, yf) (ContinueGame (Player (x,y)) (Monster (xm,ym) s) foodList score passed) 
     | (absVal (x - xm) <= 20) && (absVal (y - ym) <= 20) = (GameEnd score) -- monster has caught player, and game ends
@@ -201,7 +201,7 @@ moveToPlayer (ContinueGame (Player (x,y)) (Monster (xm,ym) s) foodList score pas
           player = ContinueGame (Player (x,y))
           checkTime = newFoodAdd passed foodList
 
--- This function takes in the current food item and current food list, and appends a new 
+-- This function takes in the time passed and current food list, and appends a new 
 -- food to the list, only if 5 seconds have passed since the last food item appeared
 newFoodAdd :: Int -> [Food] -> [Food]
 newFoodAdd passed foodList 
