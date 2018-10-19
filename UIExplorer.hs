@@ -1,6 +1,6 @@
 -- CPSC 312 Project 1 by Curtis Fox and Jennifer Ahn
 module UIExplorer where
--- To run the program, use the following commands in this order:
+-- To run the program, use the following commands:
 -- ghci
 -- :l explorer.hs
 -- main
@@ -108,8 +108,8 @@ handleKeys (EventKey (SpecialKey KeyRight) Down _ _) (ContinueGame (Player (x,y)
 
 -- Speeds up monster if left shift pressed
 handleKeys (EventKey (SpecialKey KeyShiftL) Down _ _) (ContinueGame (Player (x,y)) (Monster (xm,ym) s) foodList score passed) 
-    | s < 60 = (player (Monster (xm,ym) (s + 5)) foodList score passed)
-    | s >= 60 = (player (Monster (xm,ym) s) foodList score passed)
+    | s < 100 = (player (Monster (xm,ym) (s + 5)) foodList score passed)
+    | s >= 100 = (player (Monster (xm,ym) s) foodList score passed)
     where player = ContinueGame (Player (x,y))
 
 -- Slows monster down if left ctrl pressed
